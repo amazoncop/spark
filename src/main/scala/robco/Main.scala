@@ -5,20 +5,28 @@ package robco
  */
 
 import java.net.URI
-
 import org.apache.hadoop.conf._
 import org.apache.hadoop.fs._
 
 object HDFSFileService {
   val conf = new Configuration()
-  val fileSystem = FileSystem.get(URI.create("hdfs://52.64.112.251:9000/"), conf)
+  val fileSystem = FileSystem.get(URI.create("hdfs://localhost:9000/"), conf)
 }
 
 object Main extends App {
   val fs = HDFSFileService.fileSystem
   val iterator = fs.listFiles(new Path("/"), true)
-  while (iterator.hasNext) {
-    println(iterator.next.getPath)
-  }
-//  println("testing")
+
+  println("Files:")
+  while (iterator.hasNext) { println(iterator.next.getPath.getName) }
+
+  val src = new Path("/hosts")
+  fs.delete(src, true)
+
+  println("Files:")
+  while (iterator.hasNext) { println(iterator.next.getPath.getName) }
+  fs.copyFromLocalFile(new Path("/etc/hosts"), new Path("/hosts"))
+
+  println("Files:")
+  while (iterator.hasNext) { println(iterator.next.getPath.getName) }
 }
