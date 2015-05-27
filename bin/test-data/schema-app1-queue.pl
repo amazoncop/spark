@@ -1,13 +1,13 @@
 our %schema = (
   'queue' => {
-    'instances' => 600000,
+    'instances' => 100000,
     'node' => {
       'type' => 'node',
-      'range' => [qw/0 99999/],
+      'range' => [qw/0 9999/],
     },
     'port' => {
       'type' => 'port',
-      'range' => [qw/1 9/]
+      'range' => [qw/1 3/]
     },
     'queue' => {
       'type' => 'set',

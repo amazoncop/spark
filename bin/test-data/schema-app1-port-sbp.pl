@@ -7,7 +7,7 @@ our %schema = (
     },
     'port' => {
       'type' => 'port',
-      'range' => [qw/1 9/]
+      'range' => [qw/1 3/]
     },
     'egressRate' => { 'type' => 'set', 'pool' => [qw/-1/] },
     'pirOverrideLow'  => { 'type' => 'set', 'pool' => [qw/100 300/] },

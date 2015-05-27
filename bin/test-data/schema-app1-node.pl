@@ -3,7 +3,7 @@ our %schema = (
     'instances' => 10000,
     'id' => {
       'type' => 'node',
-      'range' => [qw/0 99999/]
+      'range' => [qw/0 9999/]
     }
   },
 );
