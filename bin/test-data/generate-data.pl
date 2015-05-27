@@ -100,9 +100,7 @@ sub generateDataForTable {
     my $i = 0;
     while ( $i < $instances ) {
         my %row_data;
-        if ( $i == 0 ) {
-            print join(',', grep { $_ ne 'instances' } sort keys %$columns), "\n";
-        }
+        #if ( $i == 0 ) { print join(',', grep { $_ ne 'instances' } sort keys %$columns), "\n"; }
         foreach my $column (sort keys %$columns) {
             if ( ref($columns->{$column}) eq 'HASH' ) {
                 my $nodeType = $columns->{$column}{'type'};
