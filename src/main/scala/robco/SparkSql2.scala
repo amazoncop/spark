@@ -14,7 +14,7 @@ object SparkSql2 {
     val conf =
         new SparkConf().setMaster(sparkMaster)
             .set("spark.driver.memory", "6G")
-            .set("spark.storage.memoryFraction", "0.1")
+            .set("spark.storage.memoryFraction", "0.6")
             .set("spark.executor.memory", "6G")
     val dataset = args(2)
     val sc = new SparkContext(conf)
