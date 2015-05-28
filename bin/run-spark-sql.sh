@@ -4,8 +4,10 @@
 APP="app1"
 [ -n "$1" ] && APP="$1"
 
+[ -z "$SPARK_CLASS" ] && SPARK_CLASS="robco.SparkSql"
+
 /home/ec2-user/spark-1.3.1-bin-hadoop2.6/bin/spark-submit \
-    --class robco.SparkSql \
+    --class "$SPARK_CLASS" \
     --master spark://$SPARK_MASTER_ADDRESS:7077 \
     --deploy-mode cluster \
     --driver-memory 6G \
