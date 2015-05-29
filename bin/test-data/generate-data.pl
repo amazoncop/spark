@@ -56,8 +56,8 @@ sub dataForPort {
 
 sub dataForSet {
     my ($options) = @_;
-    my $pool= $options->{'pool'};
-    $pool->[ int(rand(scalar(@$pool))) ]; # randomly pick an element from the pool
+    my $range= $options->{'range'};
+    $range->[ int(rand(scalar(@$range))) ]; # randomly pick an element from the range
 }
 
 sub dataForReading {
