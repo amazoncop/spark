@@ -1,10 +1,11 @@
 package robco
 
 import org.apache.spark.{SparkContext, SparkConf}
+import org.apache.spark.sql.functions._
 
 object SparkSql2 {
   // case class Person(firstName: String, lastName: String, gender: String)
-  case class CvcInfo(cvcId: String, description: Name)
+  case class CvcInfo(cvcId: String, description: String)
   case class AvcInfo(avcId: String, cvcId: String)
   case class AvcData(avcId: String, octetsIn: String, octetsOut: String)
 
@@ -17,6 +18,7 @@ object SparkSql2 {
             .set("spark.driver.memory", "6G")
             .set("spark.storage.memoryFraction", "0.6")
             .set("spark.executor.memory", "6G")
+            .set("spark.driver.maxResultSize", "4G")
     val dataset = args(2)
     val sc = new SparkContext(conf)
     sys.ShutdownHookThread { sc.stop() }
@@ -40,10 +42,15 @@ object SparkSql2 {
         WHERE ad.avcId = ai.avcId AND
               ai.cvcId = ci.cvcId
     """)
-    val results = rows.collect
+    val results = rows.groupBy(cvcInfo.col("cvcId")).agg(cvcInfo.col("cvcId"), sum(avcData.col("octetsOut"))).collect
     val queryTime = (System.currentTimeMillis()/1000) - startTime2
     println("query time: " + queryTime)
-    println("number of results: " + results.length)
     println("total time taken: " + (dataLoadTime + queryTime))
+    results.foreach(println)
+    println("number of results: " + results.length)
   }
 }
+
+
+
+
