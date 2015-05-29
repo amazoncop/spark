@@ -4,7 +4,7 @@ our %schema = (
     'avcId' => { 'type' => 'auto', },
     'cvcId' => {
       'type' => 'int',
-      'range' => [qw/1 10000/]
+      'range' => [qw/0 50000/]
     },
   },
 );
