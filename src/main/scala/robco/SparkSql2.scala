@@ -4,6 +4,7 @@ import org.apache.spark.{SparkContext, SparkConf}
 
 object SparkSql2 {
   // case class Person(firstName: String, lastName: String, gender: String)
+  case class CvcInfo(cvcId: String, description: Name)
   case class AvcInfo(avcId: String, cvcId: String)
   case class AvcData(avcId: String, octetsIn: String, octetsOut: String)
 
@@ -21,19 +22,23 @@ object SparkSql2 {
     sys.ShutdownHookThread { sc.stop() }
     val hc = new org.apache.spark.sql.hive.HiveContext(sc)
     import hc.implicits._
-    val avcsRDD = sc.textFile(s"$hdfsRoot/data-schema-$dataset-avcInfo.csv").map(_.split(",")).map(a => AvcInfo(a(0),a(1)))
-    val avcs = avcsRDD.toDF
-    avcs.registerTempTable("avcs")
+    val cvcInfoRDD = sc.textFile(s"$hdfsRoot/data-schema-$dataset-cvcInfo.csv").map(_.split(",")).map(a => CvcInfo(a(0),a(1)))
+    val avcInfoRDD = sc.textFile(s"$hdfsRoot/data-schema-$dataset-avcInfo.csv").map(_.split(",")).map(a => AvcInfo(a(0),a(1)))
     val avcDataRDD = sc.textFile(s"$hdfsRoot/data-schema-$dataset-avcData.csv").map(_.split(",")).map(a => AvcData(a(0),a(1),a(2)))
+    val cvcInfo = cvcInfoRDD.toDF
+    val avcInfo = avcInfoRDD.toDF
     val avcData = avcDataRDD.toDF
+    cvcInfo.registerTempTable("cvcInfo")
+    avcInfo.registerTempTable("avcInfo")
     avcData.registerTempTable("avcData")
     val dataLoadTime = (System.currentTimeMillis()/1000) - startTime
     println("loading data time: " + dataLoadTime)
     val startTime2 = System.currentTimeMillis()/1000
     val rows = hc.sql("""
-        SELECT a.*, ad.*
-        FROM avcs a, avcData ad
-        WHERE a.avcId = ad.avcId
+        SELECT ai.*, ad.*, ci.*
+        FROM avcInfo ai, avcData ad, cvcInfo ci
+        WHERE ad.avcId = ai.avcId AND
+              ai.cvcId = ci.cvcId
     """)
     val results = rows.collect
     val queryTime = (System.currentTimeMillis()/1000) - startTime2
