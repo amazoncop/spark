@@ -1,16 +1,8 @@
 our %schema = (
   'port' => {
-    'instances' => 170000,
-    'portId' => {
-      'type' => 'auto',
-    },
-    'node' => {
-      'type' => 'node',
-      'range' => [qw/0 999/],
-    },
-    'port' => {
-      'type' => 'port',
-      'range' => [qw/1 4/]
-    },
+    'instances' => 1800000,
+    'id'   => { 'type' => 'auto', },
+    'node' => { 'type' => 'node', 'range' => [qw/0 1999/], },
+    'port' => { 'type' => 'port', 'range' => [qw/1 9/] },
   },
 );
