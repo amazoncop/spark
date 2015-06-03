@@ -4,7 +4,7 @@ import org.apache.spark.{SparkContext, SparkConf}
 import org.apache.spark.sql.functions._
 
 object SparkSql3 {
-  case class Info(node: String, port: String, id: String)
+  case class Info(id: String, node: String, port: String)
   case class Data(id: String, timestamp: String, value: String)
 
   def main(args: Array[String]) = {
